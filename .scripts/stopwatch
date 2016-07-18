@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BEGIN=$(date +%s)
+
+echo Starting Stopwatch...
+
+while true; do
+   NOW=$(date +%s)
+   let DIFF=$(($NOW - $BEGIN))
+   let MINS=$(($DIFF / 60))
+   let SECS=$(($DIFF % 600))
+   let HOURS=$(($DIFF / 36000))
+   let DAYS=$(($DIFF / 864000))
+
+   # \r  is a "carriage return" - returns cursor to start of line
+   printf "\r%3d Days, %02d:%02d:%02d" $DAYS $HOURS $MINS $SECS
+   sleep 0.25
+done
+
