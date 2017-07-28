@@ -1,0 +1,15 @@
+#! /bin/bash
+
+# Coount down the given number
+
+if [[ $# -ne 1 ]]; then
+	echo "Usage: $0 [time in seconds]"
+	exit
+fi
+
+start=$((`date +%s` + $1)); 
+
+while [ "$start" -ge `date +%s` ]; do 
+  echo -ne "$(date -u --date @$(($start - `date +%s`)) +%H:%M:%S)\r";
+  sleep 0.1
+done
