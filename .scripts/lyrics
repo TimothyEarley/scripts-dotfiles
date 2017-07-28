@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# get the lyrics through playerctl
+command -v playerctl >/dev/null 2&>1 || { echo >&2 'playertl is needed. Please install it'; exit 1; }
+
+title=`playerctl metadata title`
+artist=`playerctl metadata artist`
+
+clear
+
+echo
+echo "$title - $artist"
+echo
+
+# try makeitpersonal.co first
+lyrics=`curl -s --get "https://makeitpersonal.co/lyrics" --data-urlencode "artist=$artist" --data-urlencode "title=$title"`
+
+grep "Sorry, We don't have lyrics for this song yet." <<< "$lyrics" >/dev/null || { echo "$lyrics"; exit 0; }
+
+# and then chartlyrics
+
+lyrics=`curl -s --get "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect" --data-urlencode "artist=$artist" --data-urlencode "song=$title" | pcregrep -Mo '(?<=<Lyric>)(.|\n)*(?=</Lyric>)'`
+
+echo "$lyrics"

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# Display lyrics when a change in metadata is detected
+
+lyrics
+meta=`playerctl metadata`
+
+while true
+do
+	newmeta=`playerctl metadata`
+	if [ "$meta" != "$newmeta" ]; then
+		meta="$newmeta"
+		lyrics
+	fi
+	sleep 1
+done
