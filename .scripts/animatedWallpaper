@@ -1,0 +1,10 @@
+#! /bin/bash
+
+if [[ $# -lt 1 ]]; then
+	echo "Usage: $0 <options> [file]"
+	exit
+fi
+
+pkill xwinwrap 
+
+xwinwrap -ni -o 1.0 -fs -s -st -sp -b -nf -- mpv --loop --wid WID --keepaspect=no "$@"
