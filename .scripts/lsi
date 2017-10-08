@@ -1,0 +1,1 @@
+ls -h --color=always "$@" | perl ~/.scripts/util/ls-i.perl
