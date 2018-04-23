@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+countdown $((5 * 60))
+playing=$(playerctl status)
+playerctl pause
+echo "Your tea is ready!" | espeak -v english-north+mb -s 130 2> /dev/null
+sleep 1
+# Only start playing again if it was playing before
+if [ "$playing" = "Playing" ]; then
+	playerctl play
+fi

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+t=$(type $1)
+
+if [[ $t =~ $1\ is\ an\ alias.* ]]; then
+	echo $t
+else
+	f=$(where $1)
+	echo $f:
+	cat $f
+fi

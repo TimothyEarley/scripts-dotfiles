@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# mute player
+playing=$(playerctl status)
+playerctl pause
+#aplay ~/Music/Sounds/Annoying_Alarm_Clock-UncleKornicob-420925725.wav
+aplay ~/Music/Sounds/Spoken_Alarm.wav
+
+if [ "$playing" = "Playing" ]; then
+	playerctl play
+fi

@@ -1,0 +1,15 @@
+#! /bin/bash
+set -Eeuo pipefail
+
+# Count down to the given time
+
+if [[ $# -ne 1 ]]; then
+	echo "Usage: $0 [time in seconds]"
+	exit
+fi
+
+target=$(date -d $1 +%s)
+now=$(date +%s)
+secondsTillTarget=$(( $target - $now ))
+
+countdown $secondsTillTarget

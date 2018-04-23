@@ -1,0 +1,21 @@
+#! /bin/bash
+
+guake -e "tmux new-session -d"
+
+guake -e "tmux split-window -h"
+guake -e "tmux split-window -t 1 -v"
+guake -e "tmux split-window -t 1 -v"
+
+guake -e "tmux select-layout main-vertical"
+
+guake -e "tmux resize-pane -t 0 -R 150"
+guake -e "tmux split-window -t 0 -h"
+
+guake -e "tmux send-keys -t 0 gtop enter C-l"
+guake -e "tmux send-keys -t 1 lyrics-watch enter C-l"
+guake -e "tmux clock-mode -t 2"
+guake -e "tmux send-keys -t 3 'watch --color -t -n 600 gcalcli agenda' enter C-l"
+guake -e "tmux send-keys -t 4 'cava' enter C-l"
+guake -e "tmux select-pane -t 0"
+
+guake -e "tmux -2 attach-session -d"

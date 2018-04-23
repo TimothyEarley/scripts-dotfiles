@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# relative path from home dir
+directory=$(pwd | sed "s|$HOME||")
+newDir=$1
+target="/mnt/data/SymlinkData${directory}/${newDir}"
+echo "Created folder at $target"
+
+mkdir -p $target
+ln -s $target ./
