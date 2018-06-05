@@ -4,7 +4,7 @@ PORTS=""
 if [ $# > 0 ]; then
 	PORTS=$* 
 else
-	echo "Is your port in use? The kill just the blocking process!"
+	echo "Is your port in use? Then just kill the blocking process!"
 	echo "Port number:"
 	read PORTS
 fi
