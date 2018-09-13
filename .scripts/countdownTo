@@ -12,4 +12,9 @@ target=$(date -d $1 +%s)
 now=$(date +%s)
 secondsTillTarget=$(( $target - $now ))
 
+# wrap days around, so from 23:00 to 01:00 becomes 2 hours instead of -22 hours
+if (( "$secondsTillTarget" < 0 )); then
+	secondsTillTarget=$(( secondsTillTarget + 60 * 60 * 24 ))
+fi
+
 countdown $secondsTillTarget

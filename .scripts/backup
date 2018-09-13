@@ -1,0 +1,19 @@
+#! /bin/bash
+
+
+# backup emails
+gmvault sync timthebo@gmail.com -d /mnt/data/gmail-backup
+
+# mount if necessary
+BCKDIR="/mnt/backup/rsnapshots"
+if [ ! -d "$BCKDIR" ]; then
+	sudo mount -a
+	if [ ! -d "$BCKDIR" ]; then
+		echo "Backup drive is not mounted"
+		exit 1
+	fi
+fi
+
+# do the snapshot
+
+sudo rsnapshot-timestamp -v sync

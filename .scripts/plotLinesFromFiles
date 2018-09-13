@@ -1,0 +1,26 @@
+#! /bin/bash
+
+# Script to show lines per file of input
+
+if [ $# -eq 0 ]; then
+	echo "Usage: $0 [files]"
+	exit
+fi
+
+FILE='out.png'
+
+wc -l $* | # count lines
+head -n -1 | # remove total
+perl -pe 's/(\d+)(.*)/$1, $2/g' | # to csv
+sort -nr | # sort by lines
+(echo "lines, file" && cat) | # add header to csv
+r -de "
+library(ggplot2)
+print(summary(X[,1]))
+X\$file <- factor(X\$file, X\$file)
+p <- ggplot(data=X, aes(x=file, y=lines)) + geom_bar(stat='identity') + coord_flip()
+ggsave('$FILE')
+
+"
+
+xdg-open $FILE

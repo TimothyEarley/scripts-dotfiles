@@ -1,0 +1,1 @@
+wc -l  **/*.java | head -n -1 | grep -Po '\d+(?= )' | sort -nr | gnuplot -p -e "plot '<cat' with histogram"

@@ -1,0 +1,55 @@
+#! /bin/bash
+
+# Installs vrep bindings for octave
+octave='/usr/share/octave'
+version='4.2.1'
+octavevrep=$octave/$version/m/v-rep
+vrep='/usr/share/vrep'
+
+# See
+# https://moodle.informatik.tu-darmstadt.de/pluginfile.php/53321/mod_resource/content/4/Einf%C3%BChrung%20Octave%20und%20V-REP.pdf
+# and
+# http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm
+
+tmp=$(mktemp -d)
+cd $tmp
+
+# copy the base folder
+cp -r $vrep/programming/remoteApiBindings/octave .
+cd octave
+# add source files
+cp -r $vrep/programming/remoteApi/* .
+cp -r $vrep/programming/include/* .
+
+# build using octave
+octave buildLin.m
+
+# we created a remApi.oct file, which we will add back to the octave folder
+mv remApi.oct octave/
+
+echo "Changing port to 19997 in example..."
+
+command -v sponge >/dev/null 2>&1 || { echo "I require sponge from moreutils, please install this (available in most distros) or find something else to buffer in a pipe."; exit 1; }
+
+# change port
+< octave/simpleTest.m sed 's/19999/19997/g' | sponge > octave/simpleTest.m
+# change binding location
+< octave/remApiSetup.m sed "s#octfile =.*#octfile = "'"'"$octavevrep/remApi.oct"'"'";#" | sponge > octave/remApiSetup.m
+
+echo "Copying binding to $octavevrep"
+
+# remove old
+if [ -e $octavevrep ]; then
+	sudo rm -r $octavevrep
+fi
+
+# add folder (if not there)
+sudo mkdir -p $octavevrep
+
+# place these bindings in octave
+sudo mv octave/*  $octavevrep
+
+echo "Installation finished"
+
+# clean up after us
+rm -r $tmp

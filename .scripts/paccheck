@@ -1,0 +1,40 @@
+#! /bin/zsh
+
+ud=$(pacaur -Dkk 2>&1)
+count=$(echo "$ud" | wc -l )
+echo "$count unmet deps"
+if [[ $count -gt 0 ]]; then
+	echo "$ud"
+fi
+
+orphanes=$(pacaur -Qtdq)
+#TODO fix count off by one if 0
+count=$(echo "$orphanes" | wc -l )
+echo "$count orphanes found"
+if [[ $count -gt 0 ]]; then
+	echo $orphanes
+fi
+
+
+perl -E 'say "-" x `tput cols`'
+echo "$(pacaur -k | wc -l) updates in aur"
+pacaur -k
+
+printf "Update now? [y/N]: "
+if read -q; then
+	pacaur -Syu
+fi
+
+# Update zplug and plugins
+source $HOME/.zsh/00_zplug.zsh #load zplug first
+
+zplug_status=$(zplug status | tee /dev/tty )
+
+if [[ ! "$zplug_status" =~ 'All packages are up-to-date' ]]; then
+
+	printf "Update now? [y/N]: "
+	if read -q; then
+			zplug update
+			zplug clean
+	fi
+fi

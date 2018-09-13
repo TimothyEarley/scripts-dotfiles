@@ -1,0 +1,9 @@
+[Unit]
+Description=Warn when low on memory
+AssertPathExists=/home/timmy/.scripts
+
+[Service]
+ExecStart=/home/timmy/.scripts/oomNotifier
+
+[Install]
+WantedBy=oomNotifier.timer

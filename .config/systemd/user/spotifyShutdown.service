@@ -1,0 +1,12 @@
+[Unit]
+Description=Close spotify before the computer goes down to remember the last song played
+
+[Service]
+# When the service starts it does nothing, but it remains ...
+Type=oneshot
+RemainAfterExit=true
+# ... to have a way to call it at the end
+ExecStop=/usr/bin/pkill spotify
+
+[Install]
+WantedBy=multi-user.target

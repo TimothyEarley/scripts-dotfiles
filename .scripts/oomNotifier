@@ -1,0 +1,10 @@
+#!/bin/bash
+
+threshold=500
+
+available=$(free -m | grep Mem | awk '{print $7}')
+
+if [ $available -lt $threshold ]; then
+	notify-send "Memory is low!" -u critical
+	aplay '/home/timmy/Music/Sounds/Annoying_Alarm_Clock-UncleKornicob-420925725.wav'
+fi

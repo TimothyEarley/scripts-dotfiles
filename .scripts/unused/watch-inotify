@@ -1,0 +1,18 @@
+#! /bin/bash
+
+echo "consider using entr"
+
+if [ $# -lt 2 ]; then
+	echo "Usage: $0 <file to watch> <command to run>"
+	exit
+fi
+
+watchfile=$1
+shift
+
+inotifywait -m -r -e modify,create,delete,attrib "$watchfile" |
+while read event
+do
+	# run the cmd
+	$@
+done
